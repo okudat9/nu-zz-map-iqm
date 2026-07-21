@@ -359,6 +359,24 @@ def main():
 
     fits = {p: fit_nu(per_pair[p], SHOTS) for p in pairs}
 
+    # Compute the control baseline and per-pair significance BEFORE printing,
+    # so the table and the JSON carry the same numbers.
+    dis_ok = [p for p in distant if fits[p]]
+    base = base_se = None
+    if len(dis_ok) >= 2:
+        dv = np.array([fits[p]["nu_khz"] for p in dis_ok])
+        de = np.array([fits[p]["err_khz"] for p in dis_ok])
+        wv = 1.0 / de**2
+        base = float((dv * wv).sum() / wv.sum())
+        base_se = float(1.0 / np.sqrt(wv.sum()))
+        for p in adjacent:
+            f = fits[p]
+            if not f:
+                continue
+            unc = math.hypot(f["err_khz"], base_se)
+            f["sigma"] = abs(f["nu_khz"] - base) / unc if unc > 0 else 0.0
+            f["resolved"] = bool(f["sigma"] > 2.0)
+
     print("=" * 78)
     print(f"  {'pair':>10} {'(IQM)':>12} | {'type':>8} | {'nu_ZZ (kHz)':>16} | {'contrast':>8}"
           + ("  | true (sim)" if SIMULATE else ""))
@@ -380,25 +398,21 @@ def main():
                          err_khz=None if not f else round(f["err_khz"], 4),
                          contrast=None if not f else round(f["contrast"], 4),
                          sigma=None if not (f and "sigma" in f) else round(f["sigma"], 2),
-                         resolved=None if not (f and "sigma" in f) else bool(f["sigma"] > 2.0)))
+                         resolved=None if not (f and "resolved" in f) else f["resolved"]))
     print("=" * 78)
 
     adj_raw = [fits[p]["nu_khz"] for p in adjacent if fits[p]]
     dis_raw = [fits[p]["nu_khz"] for p in distant if fits[p]]
     verdict = "INSUFFICIENT"
     if adj_raw and len(dis_raw) >= 2:
-        # Control baseline, tested against the MEASUREMENT errors rather than
-        # the scatter of a few points -- a handful of values can cluster by
-        # chance and make a pure-noise mean look significant.
-        dv = np.array(dis_raw)
-        de = np.array([fits[p]["err_khz"] for p in distant if fits[p]])
-        wv = 1.0 / de**2
-        base = float((dv * wv).sum() / wv.sum())          # weighted mean
-        base_se = float(1.0 / np.sqrt(wv.sum()))          # its standard error
+        # base / base_se were computed above, before the table was printed.
+        # They are tested against the MEASUREMENT errors rather than the scatter
+        # of a few points -- a handful of values can cluster by chance and make
+        # a pure-noise mean look significant.
         sig = abs(base) / base_se if base_se > 0 else 0.0
         print(f"  control baseline : {base:+.3f} +/- {base_se:.3f} kHz "
               f"({sig:.2f} sigma from zero)")
-        print(f"  test             : each pair vs baseline, using its own error")
+        print("  test             : each pair vs baseline, using its own error")
         print()
 
         # Per-pair significance. A pair with a large error bar can sit far from
@@ -409,17 +423,12 @@ def main():
             f = fits[p]
             if not f:
                 continue
-            v = f["nu_khz"]
-            dev = abs(v - base)
-            unc = math.hypot(f["err_khz"], base_se)
-            z = dev / unc if unc > 0 else 0.0
-            f["sigma"] = z
-            ok = z > 2.0
-            if ok:
-                real.append((p, v))
-            mark = (f"* coupled          ({z:.1f} sigma)" if ok
+            z = f["sigma"]
+            if f["resolved"]:
+                real.append((p, f["nu_khz"]))
+            mark = (f"* coupled          ({z:.1f} sigma)" if f["resolved"]
                     else f"  not distinguishable ({z:.1f} sigma)")
-            print(f"    {str(p):>10} {v:+8.3f} +/- {f['err_khz']:.3f} kHz  {mark}")
+            print(f"    {str(p):>10} {f['nu_khz']:+8.3f} +/- {f['err_khz']:.3f} kHz  {mark}")
         print()
         if sig > 2.0:
             verdict = (f"COMMON SYSTEMATIC: controls sit {base:+.3f} kHz from zero "
@@ -454,6 +463,8 @@ def main():
         tool="nu_zz_map_iqm", device=("SIM" if SIMULATE else DEVICE),
         job_id=jid, shots=SHOTS, taus_us=taus, t2_us=t2,
         n_edges=len(edges),
+        control_baseline_khz=None if base is None else round(base, 4),
+        control_baseline_se_khz=None if base_se is None else round(base_se, 4),
         adjacent=[list(p) for p in adjacent],
         distant=[list(p) for p in distant],
         results=rows, verdict=verdict, generated_at=ts),
