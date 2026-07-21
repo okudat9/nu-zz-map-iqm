@@ -33,7 +33,9 @@ Usage (Windows):
      The token is requested at runtime, or read from IQM_TOKEN.
 
 Requires:
-  pip install qiskit qiskit-iqm numpy scipy
+  pip install qiskit iqm-client numpy scipy
+  (the deprecated qiskit-iqm package must be uninstalled first if present;
+   the import path iqm.qiskit_iqm is unchanged)
 
 Author : Takeshi Okuda  (ORCID 0009-0006-7449-202X)
 License: Apache 2.0 -- see LICENSE
