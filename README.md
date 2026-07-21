@@ -402,8 +402,11 @@ ORCID: 0009-0006-7449-202X
 
 ## License
 
-Creative Commons Attribution-NonCommercial 4.0 (CC BY-NC 4.0). Free for research
-and education. Commercial use requires permission — please contact the author.
+Apache License 2.0. Free for any use, including commercial.
+
+If you build on this in a way that matters to you, I would like to hear about it
+— not as a condition, just because the measurement has details worth discussing
+before you rely on the numbers.
 
 ---
 

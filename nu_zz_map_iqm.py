@@ -36,7 +36,7 @@ Requires:
   pip install qiskit qiskit-iqm numpy scipy
 
 Author : Takeshi Okuda  (ORCID 0009-0006-7449-202X)
-License: CC BY-NC 4.0 -- see LICENSE
+License: Apache 2.0 -- see LICENSE
 Repo   : https://github.com/okudat9/nu-zz-map-iqm
 ================================================================================
 """
@@ -378,38 +378,48 @@ def main():
                          kind=("adjacent" if p in adjacent else "distant"),
                          nu_khz=None if not f else round(f["nu_khz"], 4),
                          err_khz=None if not f else round(f["err_khz"], 4),
-                         contrast=None if not f else round(f["contrast"], 4)))
+                         contrast=None if not f else round(f["contrast"], 4),
+                         sigma=None if not (f and "sigma" in f) else round(f["sigma"], 2),
+                         resolved=None if not (f and "sigma" in f) else bool(f["sigma"] > 2.0)))
     print("=" * 78)
 
     adj_raw = [fits[p]["nu_khz"] for p in adjacent if fits[p]]
     dis_raw = [fits[p]["nu_khz"] for p in distant if fits[p]]
     verdict = "INSUFFICIENT"
     if adj_raw and len(dis_raw) >= 2:
-        # Control baseline. The offset is tested against the MEASUREMENT
-        # errors, not the scatter of four points -- four values can cluster by
+        # Control baseline, tested against the MEASUREMENT errors rather than
+        # the scatter of a few points -- a handful of values can cluster by
         # chance and make a pure-noise mean look significant.
         dv = np.array(dis_raw)
         de = np.array([fits[p]["err_khz"] for p in distant if fits[p]])
         wv = 1.0 / de**2
         base = float((dv * wv).sum() / wv.sum())          # weighted mean
         base_se = float(1.0 / np.sqrt(wv.sum()))          # its standard error
-        spread = float(np.std(dv, ddof=1)) if len(dv) > 1 else 0.0
-        # threshold: whichever is larger -- the scatter of the controls, or the
-        # precision of a single measurement
-        cut = max(abs(base) + 2.0 * spread, 2.0 * float(np.median(de)))
         sig = abs(base) / base_se if base_se > 0 else 0.0
         print(f"  control baseline : {base:+.3f} +/- {base_se:.3f} kHz "
               f"({sig:.2f} sigma from zero)")
-        print(f"  threshold        : |nu_ZZ| > {cut:.3f} kHz")
+        print(f"  test             : each pair vs baseline, using its own error")
         print()
-        real = [(p, fits[p]["nu_khz"]) for p in adjacent
-                if fits[p] and abs(fits[p]["nu_khz"]) > cut]
+
+        # Per-pair significance. A pair with a large error bar can sit far from
+        # the baseline and still be unresolved -- one global threshold hides
+        # that, so each pair is judged against its own precision.
+        real = []
         for p in adjacent:
-            if not fits[p]:
+            f = fits[p]
+            if not f:
                 continue
-            v = fits[p]["nu_khz"]
-            mark = "* coupled" if abs(v) > cut else "  within baseline (not distinguishable)"
-            print(f"    {str(p):>10} {v:+8.3f} kHz  {mark}")
+            v = f["nu_khz"]
+            dev = abs(v - base)
+            unc = math.hypot(f["err_khz"], base_se)
+            z = dev / unc if unc > 0 else 0.0
+            f["sigma"] = z
+            ok = z > 2.0
+            if ok:
+                real.append((p, v))
+            mark = (f"* coupled          ({z:.1f} sigma)" if ok
+                    else f"  not distinguishable ({z:.1f} sigma)")
+            print(f"    {str(p):>10} {v:+8.3f} +/- {f['err_khz']:.3f} kHz  {mark}")
         print()
         if sig > 2.0:
             verdict = (f"COMMON SYSTEMATIC: controls sit {base:+.3f} kHz from zero "
@@ -417,11 +427,13 @@ def main():
                        f"values, or fix the state preparation.")
         elif real:
             verdict = (f"REAL DIRECT ZZ: {len(real)}/{len(adj_raw)} adjacent pairs "
-                       f"exceed the baseline. The map is usable.")
+                       f"are resolved above the control baseline. "
+                       f"{'All' if len(real) == len(adj_raw) else 'The remainder'} "
+                       f"{'are usable.' if len(real) == len(adj_raw) else 'need more shots or a longer T2.'}")
         else:
-            verdict = ("UNRESOLVED: no adjacent pair exceeds the baseline. "
-                       "The coupling is not resolved on this device / in this "
-                       "tau window.")
+            verdict = ("UNRESOLVED: no adjacent pair is distinguishable from the "
+                       "control baseline. Raise the shots, or the coupling is "
+                       "below the resolution of this device.")
         print(f"  -> {verdict}")
 
     if SIMULATE:
