@@ -1,0 +1,58 @@
+Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)
+
+Copyright (c) 2026 Takeshi Okuda
+ORCID: 0009-0006-7449-202X
+
+
+You are free to:
+
+  Share  — copy and redistribute the material in any medium or format
+  Adapt  — remix, transform, and build upon the material
+
+under the following terms:
+
+  Attribution   — You must give appropriate credit, provide a link to the
+                  license, and indicate if changes were made. You may do so in
+                  any reasonable manner, but not in any way that suggests the
+                  licensor endorses you or your use.
+
+  NonCommercial — You may not use the material for commercial purposes.
+
+  No additional restrictions — You may not apply legal terms or technological
+                  measures that legally restrict others from doing anything the
+                  license permits.
+
+
+Full legal text:
+https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+
+COMMERCIAL USE
+
+Commercial use requires separate written permission. This includes, but is not
+limited to, integration into commercial products or services, use in paid
+consulting, and internal use within a for-profit organisation.
+
+Please contact the author to discuss terms:
+
+  Takeshi Okuda
+  o93dice@gmail.com
+  https://orcid.org/0009-0006-7449-202X
+
+
+CITATION
+
+If this software contributes to published work, please cite:
+
+  Takeshi Okuda, "nu_zz_map_iqm: residual ZZ mapping with negative control
+  for IQM quantum processors", 2026.
+  https://github.com/okudat9/nu-zz-map-iqm
+
+
+NO WARRANTY
+
+This software is provided "as is", without warranty of any kind, express or
+implied. The author is not liable for any claim, damages, or other liability
+arising from its use. Measurements consume quantum computing credits; verify
+your configuration with the built-in simulation mode before running on
+hardware.

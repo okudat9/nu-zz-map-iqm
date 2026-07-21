@@ -1,0 +1,154 @@
+{
+  "tool": "nu_zz_map_iqm",
+  "device": "garnet",
+  "job_id": "019f81f1-2115-7590-afff-50e0ada8bb57",
+  "shots": 4096,
+  "taus_us": [
+    2.0,
+    3.88,
+    5.76,
+    7.64,
+    9.52,
+    11.4,
+    13.28,
+    15.16,
+    17.04,
+    18.92
+  ],
+  "t2_us": 8.6,
+  "n_edges": 30,
+  "adjacent": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      6,
+      11
+    ],
+    [
+      7,
+      8
+    ],
+    [
+      9,
+      10
+    ],
+    [
+      12,
+      13
+    ],
+    [
+      14,
+      15
+    ]
+  ],
+  "distant": [
+    [
+      16,
+      17
+    ]
+  ],
+  "results": [
+    {
+      "pair": [
+        0,
+        1
+      ],
+      "kind": "adjacent",
+      "nu_khz": -15.9725,
+      "err_khz": 1.6034,
+      "contrast": 0.2741
+    },
+    {
+      "pair": [
+        2,
+        3
+      ],
+      "kind": "adjacent",
+      "nu_khz": -4.6004,
+      "err_khz": 1.4014,
+      "contrast": 0.3002
+    },
+    {
+      "pair": [
+        4,
+        5
+      ],
+      "kind": "adjacent",
+      "nu_khz": -4.1855,
+      "err_khz": 0.8188,
+      "contrast": 0.4225
+    },
+    {
+      "pair": [
+        6,
+        11
+      ],
+      "kind": "adjacent",
+      "nu_khz": -4.2766,
+      "err_khz": 1.3949,
+      "contrast": 0.3075
+    },
+    {
+      "pair": [
+        7,
+        8
+      ],
+      "kind": "adjacent",
+      "nu_khz": -5.8113,
+      "err_khz": 1.6444,
+      "contrast": 0.272
+    },
+    {
+      "pair": [
+        9,
+        10
+      ],
+      "kind": "adjacent",
+      "nu_khz": -0.8261,
+      "err_khz": 0.6393,
+      "contrast": 0.5019
+    },
+    {
+      "pair": [
+        12,
+        13
+      ],
+      "kind": "adjacent",
+      "nu_khz": 0.1833,
+      "err_khz": 1.4398,
+      "contrast": 0.3128
+    },
+    {
+      "pair": [
+        14,
+        15
+      ],
+      "kind": "adjacent",
+      "nu_khz": 0.7393,
+      "err_khz": 1.111,
+      "contrast": 0.3437
+    },
+    {
+      "pair": [
+        16,
+        17
+      ],
+      "kind": "distant",
+      "nu_khz": 1.531,
+      "err_khz": 1.7547,
+      "contrast": 0.2674
+    }
+  ],
+  "verdict": "中間 — 直結ZZ + 小さな共通系統の重畳。要追試。",
+  "generated_at": "20260721_085229"
+}
