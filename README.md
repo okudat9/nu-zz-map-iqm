@@ -4,7 +4,7 @@
 
 One job. Every edge. A control that tells you whether the numbers are real.
 
-![Residual ZZ on IQM Garnet: adjacent edges fall well outside the control region, non-adjacent controls fall inside it](nu_zz_garnet.png)
+![Residual ZZ on IQM Garnet: four of five adjacent edges are resolved well outside the control region; the non-adjacent controls sit inside it](nu_zz_garnet.png)
 
 Parallel crosstalk characterisation is established practice — see Murali et al.
 (ASPLOS 2020), Sarovar et al. (Quantum **4**, 321), Ketterer & Wellens
@@ -140,8 +140,11 @@ T1. The coupling map, pair selection and τ range follow automatically.
       (0, 1)      QB1-QB2 | adjacent |  -11.657 ± 2.463 |    0.193
       (9, 12)    QB10-QB13| control  |   -0.458 ± 0.627 |    0.510
 
-  control baseline : mean -0.478 kHz   spread ±0.296 kHz
-  threshold        : |ν_ZZ| > 1.070 kHz
+  control baseline : -0.444 +/- 0.487 kHz (0.91 sigma from zero)
+  test             : each pair vs baseline, using its own error
+
+    (0, 1)   -11.657 +/- 2.463 kHz  * coupled          (4.5 sigma)
+    (7, 8)    -2.458 +/- 2.075 kHz    not distinguishable (0.9 sigma)
 ```
 
 **Qubit numbering.** Pairs are reported as zero-based indices from the coupling
@@ -149,8 +152,12 @@ map. IQM labels the same qubits from 1, so `(0, 1)` is `QB1-QB2` and `(7, 8)` is
 `QB8-QB9`. Both forms appear in the console output and in the JSON.
 
 - **control baseline** — where zero actually sits for this apparatus, today.
-- **threshold** — `|mean| + 2×spread` of the controls. Adjacent pairs above it
-  are reported as coupled; pairs below it are not distinguishable from nothing.
+  Reported as a weighted mean with its standard error, so you can see whether
+  the apparatus has a real offset or is simply noisy.
+- **per-pair test** — each adjacent pair is compared to the baseline using
+  **its own** error bar: `|ν_ZZ − base| / √(err² + base_se²) > 2σ`. A single
+  global threshold would hide the fact that a pair with a wide error bar can
+  sit far from zero and still be unresolved.
 - **contrast** — surviving fringe amplitude at the longest τ. Low contrast means
   short T2 on that pair and a correspondingly larger error bar.
 
@@ -180,7 +187,7 @@ avoid it. The numbers below are the actual Garnet measurement.
 | QB3-QB4 | 6.47 | 0.010 | 0.020 | 0.041 | 0.102 |
 | QB7-QB12 | 5.36 | 0.008 | 0.017 | 0.034 | 0.084 |
 | QB5-QB6 | 4.47 | 0.007 | 0.014 | 0.028 | 0.070 |
-| QB8-QB9 | 2.01 | 0.003 | 0.006 | 0.013 | 0.032 |
+| QB8-QB9 | (unresolved) | — | — | — | — |
 
 Radians. A coherent phase error of 0.1 rad is already visible in most
 algorithms; it does not average away with more shots.
@@ -195,9 +202,10 @@ Number of 1 µs idle windows before 0.1 rad accumulates:
 | QB3-QB4 | 5 |
 | QB7-QB12 | 6 |
 | QB5-QB6 | 7 |
-| QB8-QB9 | **16** |
+| QB8-QB9 | (unresolved) |
 
-Same chip, same day, a factor of five between the best and worst edge. If your
+Same chip, same day, a factor of 2.4 between the noisiest and quietest
+*resolved* edge — and QB8-QB9 may be quieter still, if more shots resolve it. If your
 circuit leaves qubits waiting — mid-circuit measurement, conditional operations,
 uneven gate scheduling — this is the difference between a usable result and a
 scrambled one.
@@ -205,8 +213,9 @@ scrambled one.
 ### 3. Choosing where to run
 
 Rank the edges and place idle-heavy parts of the circuit on the quiet ones. On
-this Garnet snapshot, QB8-QB9 accumulates 5.6× less phase error than QB1-QB2.
-No published calibration data would have told you that.
+this Garnet snapshot, QB5-QB6 accumulates 2.4× less phase error than QB1-QB2,
+and QB8-QB9 is quieter than anything the measurement could resolve. No
+published calibration data would have told you that.
 
 ### 4. Compensating what you cannot avoid
 
@@ -217,7 +226,7 @@ the neighbour being excited:
 |---|---|---|---|
 | QB1-QB2 | −0.035 | −0.070 | −0.176 |
 | QB3-QB4 | −0.020 | −0.041 | −0.102 |
-| QB8-QB9 | −0.006 | −0.013 | −0.032 |
+| QB5-QB6 | −0.014 | −0.028 | −0.070 |
 
 Coherent error is systematic, so this subtraction works — unlike shot noise,
 which you can only average down.
@@ -232,9 +241,9 @@ The relative error decides what the number is good for:
 | **15–40%** | ranking edges — trust the ordering, not the value |
 | **> 40%** | presence or absence only |
 
-In the Garnet run, four edges fall in the 18–24% band (ranking) and QB8-QB9 at
-103% only tells you something is there. If you need compensation-grade numbers,
-raise the shots or move to a device with longer T2.
+In the Garnet run, four edges fall in the 18–24% band (usable for ranking) and
+QB8-QB9 at 103% does not clear the baseline at all. If you need
+compensation-grade numbers, raise the shots or move to a device with longer T2.
 
 ### 6. Predicting the optimal delay
 
@@ -277,23 +286,32 @@ negative values gives a one-sided p of 0.063. Consistent with no coupling,
 though a small common offset of a few tenths of a kHz cannot be excluded — and
 asymmetric readout is expected to contribute at roughly that scale.
 
-**Adjacent edges** (offset-corrected)
+**Adjacent edges**, each tested against the baseline with its own error bar:
 
-| pair | ν_ZZ (kHz) | τ\* (µs) |
-|---|---|---|
-| QB1-QB2 | −11.213 ± 2.463 | 24.8 |
-| QB3-QB4 | −6.471 ± 1.309 | 42.9 |
-| QB7-QB12 | −5.357 ± 1.268 | 51.9 |
-| QB5-QB6 | −4.466 ± 0.809 | 62.2 |
-| QB8-QB9 | −2.014 ± 2.075 | 137.9 |
+| pair | ν_ZZ (kHz) | significance | τ\* (µs) |
+|---|---|---|---|
+| QB1-QB2 | −11.657 ± 2.463 | 4.5σ | 24.8 |
+| QB3-QB4 | −6.915 ± 1.309 | 4.6σ | 42.9 |
+| QB7-QB12 | −5.801 ± 1.268 | 3.9σ | 51.9 |
+| QB5-QB6 | −4.910 ± 0.809 | 4.7σ | 62.2 |
+| QB8-QB9 | −2.458 ± 2.075 | **0.9σ** | — |
 
-The weakest adjacent pair exceeds the strongest control by 3.2×. The two
-populations do not overlap.
+**Four of five edges are resolved.** QB8-QB9 sits further from zero than any
+control, but its own error bar (±2.075, 103% relative) is wide enough that it
+cannot be separated from the baseline. It is reported, not confirmed.
+
+This is exactly what the per-pair test exists to catch. A global threshold
+based only on the spread of the controls would have counted it as coupled —
+and the tool would have handed over a number that its own error bar does not
+support.
 
 All adjacent values are negative, which is the expected sign for
 fixed-frequency transmons with negative anharmonicity. Without the control this
 would be indistinguishable from a systematic offset — which is precisely the
 failure mode the control exists to catch.
+
+Resolved couplings on this run span **4.9 to 11.7 kHz**; the controls span
+**0.08 to 0.76 kHz**.
 
 ---
 
