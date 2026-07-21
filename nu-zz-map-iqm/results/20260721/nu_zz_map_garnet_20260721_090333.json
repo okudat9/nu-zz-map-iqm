@@ -1,0 +1,154 @@
+{
+  "tool": "nu_zz_map_iqm",
+  "device": "garnet",
+  "job_id": "019f81fb-458f-7662-874e-f6276e689f60",
+  "shots": 4096,
+  "taus_us": [
+    2.0,
+    3.88,
+    5.76,
+    7.64,
+    9.52,
+    11.4,
+    13.28,
+    15.16,
+    17.04,
+    18.92
+  ],
+  "t2_us": 8.6,
+  "n_edges": 30,
+  "adjacent": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      6,
+      11
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "distant": [
+    [
+      9,
+      12
+    ],
+    [
+      10,
+      13
+    ],
+    [
+      14,
+      16
+    ],
+    [
+      15,
+      17
+    ]
+  ],
+  "results": [
+    {
+      "pair": [
+        0,
+        1
+      ],
+      "kind": "adjacent",
+      "nu_khz": -11.657,
+      "err_khz": 2.463,
+      "contrast": 0.1934
+    },
+    {
+      "pair": [
+        2,
+        3
+      ],
+      "kind": "adjacent",
+      "nu_khz": -6.9148,
+      "err_khz": 1.3086,
+      "contrast": 0.3175
+    },
+    {
+      "pair": [
+        4,
+        5
+      ],
+      "kind": "adjacent",
+      "nu_khz": -4.91,
+      "err_khz": 0.8089,
+      "contrast": 0.4202
+    },
+    {
+      "pair": [
+        6,
+        11
+      ],
+      "kind": "adjacent",
+      "nu_khz": -5.8013,
+      "err_khz": 1.2681,
+      "contrast": 0.3274
+    },
+    {
+      "pair": [
+        7,
+        8
+      ],
+      "kind": "adjacent",
+      "nu_khz": -2.4583,
+      "err_khz": 2.0753,
+      "contrast": 0.2359
+    },
+    {
+      "pair": [
+        9,
+        12
+      ],
+      "kind": "distant",
+      "nu_khz": -0.4584,
+      "err_khz": 0.6271,
+      "contrast": 0.5095
+    },
+    {
+      "pair": [
+        10,
+        13
+      ],
+      "kind": "distant",
+      "nu_khz": -0.614,
+      "err_khz": 1.39,
+      "contrast": 0.3123
+    },
+    {
+      "pair": [
+        14,
+        16
+      ],
+      "kind": "distant",
+      "nu_khz": -0.0757,
+      "err_khz": 1.1789,
+      "contrast": 0.3262
+    },
+    {
+      "pair": [
+        15,
+        17
+      ],
+      "kind": "distant",
+      "nu_khz": -0.7638,
+      "err_khz": 1.5133,
+      "contrast": 0.2979
+    }
+  ],
+  "verdict": "【本物の直結ZZ】5/5 ペアが基準線を超えた。マップとして使える。",
+  "generated_at": "20260721_090333"
+}
