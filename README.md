@@ -106,8 +106,12 @@ out exactly. It does **not** remove *additive* corruption, because
 ## Install
 
 ```
-pip install qiskit qiskit-iqm numpy scipy
+pip install qiskit iqm-client numpy scipy
 ```
+
+If you previously installed the deprecated `qiskit-iqm` package, remove it first
+(`pip uninstall qiskit-iqm`) — the Qiskit adapter now ships inside `iqm-client`
+and the import path `iqm.qiskit_iqm` is unchanged.
 
 ## Run
 
