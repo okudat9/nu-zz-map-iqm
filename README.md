@@ -140,15 +140,19 @@ T1. The coupling map, pair selection and τ range follow automatically.
 ## Reading the output
 
 ```
-        pair        (IQM) |   type   |       ν_ZZ (kHz) | contrast
-      (0, 1)      QB1-QB2 | adjacent |  -11.657 ± 2.463 |    0.193
-      (9, 12)    QB10-QB13| control  |   -0.458 ± 0.627 |    0.510
-
+        pair        (IQM) |     type |      nu_ZZ (kHz) | contrast
+  --------------------------------------------------------------------------
+      (0, 1)      QB1-QB2 | adjacent |  -11.657 +/- 2.463 |    0.193
+     (9, 12)    QB10-QB13 |  control |   -0.458 +/- 0.627 |    0.510
+==============================================================================
   control baseline : -0.444 +/- 0.487 kHz (0.91 sigma from zero)
   test             : each pair vs baseline, using its own error
 
-    (0, 1)   -11.657 +/- 2.463 kHz  * coupled          (4.5 sigma)
-    (7, 8)    -2.458 +/- 2.075 kHz    not distinguishable (0.9 sigma)
+        (0, 1)  -11.657 +/- 2.463 kHz  * coupled          (4.5 sigma)
+        (7, 8)   -2.458 +/- 2.075 kHz    not distinguishable (0.9 sigma)
+
+  -> REAL DIRECT ZZ: 4/5 adjacent pairs are resolved above the control
+     baseline. The remainder need more shots or a longer T2.
 ```
 
 **Qubit numbering.** Pairs are reported as zero-based indices from the coupling
