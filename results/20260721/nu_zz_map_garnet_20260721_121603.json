@@ -1,0 +1,183 @@
+{
+  "tool": "nu_zz_map_iqm",
+  "device": "garnet",
+  "job_id": "019f8266-9e4d-71e2-b165-75fd6f297b28",
+  "shots": 4096,
+  "taus_us": [
+    2.0,
+    3.83,
+    5.66,
+    7.49,
+    9.32,
+    11.16,
+    12.99,
+    14.82,
+    16.65,
+    18.48
+  ],
+  "t2_us": 8.4,
+  "n_edges": 30,
+  "control_baseline_khz": -0.0738,
+  "control_baseline_se_khz": 0.4847,
+  "adjacent": [
+    [
+      0,
+      1
+    ],
+    [
+      2,
+      3
+    ],
+    [
+      4,
+      5
+    ],
+    [
+      6,
+      11
+    ],
+    [
+      7,
+      8
+    ]
+  ],
+  "distant": [
+    [
+      9,
+      12
+    ],
+    [
+      10,
+      13
+    ],
+    [
+      14,
+      16
+    ],
+    [
+      15,
+      17
+    ]
+  ],
+  "results": [
+    {
+      "pair": [
+        0,
+        1
+      ],
+      "iqm_label": "QB1-QB2",
+      "kind": "adjacent",
+      "nu_khz": -14.6758,
+      "err_khz": 1.3613,
+      "contrast": 0.3116,
+      "sigma": 10.1,
+      "resolved": true
+    },
+    {
+      "pair": [
+        2,
+        3
+      ],
+      "iqm_label": "QB3-QB4",
+      "kind": "adjacent",
+      "nu_khz": -6.4475,
+      "err_khz": 1.0448,
+      "contrast": 0.3659,
+      "sigma": 5.53,
+      "resolved": true
+    },
+    {
+      "pair": [
+        4,
+        5
+      ],
+      "iqm_label": "QB5-QB6",
+      "kind": "adjacent",
+      "nu_khz": -4.8089,
+      "err_khz": 0.8876,
+      "contrast": 0.4146,
+      "sigma": 4.68,
+      "resolved": true
+    },
+    {
+      "pair": [
+        6,
+        11
+      ],
+      "iqm_label": "QB7-QB12",
+      "kind": "adjacent",
+      "nu_khz": -6.6741,
+      "err_khz": 0.9907,
+      "contrast": 0.3815,
+      "sigma": 5.98,
+      "resolved": true
+    },
+    {
+      "pair": [
+        7,
+        8
+      ],
+      "iqm_label": "QB8-QB9",
+      "kind": "adjacent",
+      "nu_khz": -2.038,
+      "err_khz": 3.0332,
+      "contrast": 0.1499,
+      "sigma": 0.64,
+      "resolved": false
+    },
+    {
+      "pair": [
+        9,
+        12
+      ],
+      "iqm_label": "QB10-QB13",
+      "kind": "distant",
+      "nu_khz": -0.3619,
+      "err_khz": 0.7242,
+      "contrast": 0.467,
+      "sigma": null,
+      "resolved": null
+    },
+    {
+      "pair": [
+        10,
+        13
+      ],
+      "iqm_label": "QB11-QB14",
+      "kind": "distant",
+      "nu_khz": -1.3643,
+      "err_khz": 1.4157,
+      "contrast": 0.3187,
+      "sigma": null,
+      "resolved": null
+    },
+    {
+      "pair": [
+        14,
+        16
+      ],
+      "iqm_label": "QB15-QB17",
+      "kind": "distant",
+      "nu_khz": 1.2723,
+      "err_khz": 1.1772,
+      "contrast": 0.3402,
+      "sigma": null,
+      "resolved": null
+    },
+    {
+      "pair": [
+        15,
+        17
+      ],
+      "iqm_label": "QB16-QB18",
+      "kind": "distant",
+      "nu_khz": 0.1227,
+      "err_khz": 0.9408,
+      "contrast": 0.3941,
+      "sigma": null,
+      "resolved": null
+    }
+  ],
+  "verdict": "REAL DIRECT ZZ: 4/5 adjacent pairs are resolved above the control baseline. The remainder need more shots or a longer T2.",
+  "generated_at": "20260721_121603"
+}
