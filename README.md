@@ -290,9 +290,10 @@ T2-echo = 19.5 µs, CZ error 0.66%, 30 edges (medians).
 | QB16-QB18 | −0.764 ± 1.513 |
 
 Weighted mean **−0.444 ± 0.487 kHz**, i.e. 0.91σ from zero. A sign test on four
-negative values gives a one-sided p of 0.063. Consistent with no coupling,
-though a small common offset of a few tenths of a kHz cannot be excluded — and
-asymmetric readout is expected to contribute at roughly that scale.
+negative values gives a one-sided p of 0.063 — consistent with no coupling, but
+not enough on its own to exclude a small common offset. A second run three hours
+later returned mixed signs and a mean of −0.074 ± 0.485 kHz; see
+[Reproducibility](#reproducibility--two-runs-three-hours-apart).
 
 **Adjacent edges**, each tested against the baseline with its own error bar:
 
@@ -323,6 +324,42 @@ Resolved couplings on this run span **4.9 to 11.7 kHz**; the controls span
 
 ---
 
+## Reproducibility — two runs, three hours apart
+
+`job_id 019f8266-9e4d-71e2-b165-75fd6f297b28`, 12:16 JST, same pairs, same
+settings, spanning a scheduled calibration window.
+
+| pair | 09:03 | 12:16 | difference | consistency |
+|---|---|---|---|---|
+| QB1-QB2 | −11.657 ± 2.463 | −14.676 ± 1.361 | −3.019 | 1.07σ |
+| QB3-QB4 | −6.915 ± 1.309 | −6.447 ± 1.045 | +0.467 | 0.28σ |
+| QB7-QB12 | −5.801 ± 1.268 | −6.674 ± 0.991 | −0.873 | 0.54σ |
+| QB5-QB6 | −4.910 ± 0.809 | −4.809 ± 0.888 | +0.101 | 0.08σ |
+| QB8-QB9 | −2.458 ± 2.075 | −2.038 ± 3.033 | +0.420 | 0.11σ |
+
+**All five agree within their combined error bars.** The verdict is identical:
+four edges resolved, QB8-QB9 unresolved in both runs (0.95σ and 0.64σ).
+
+The controls are the more interesting half.
+
+| run | control values (kHz) | weighted mean |
+|---|---|---|
+| 09:03 | −0.458, −0.614, −0.076, −0.764 | −0.444 ± 0.487 (0.91σ) |
+| 12:16 | −0.362, −1.364, +1.272, +0.123 | −0.074 ± 0.485 (0.15σ) |
+
+The first run returned four negative values. That is a 6.3% coincidence if the
+true mean is zero — not enough to claim a systematic offset, but not enough to
+dismiss one either. The second run returned mixed signs, which is what noise
+looks like.
+
+Read together, the controls are scattered around zero and the earlier
+all-negative pattern was chance. **A single run could not have told you that** —
+which is the same lesson that produced this tool in the first place.
+
+Both result files are in `results/20260721/`.
+
+---
+
 ## Cost
 
 Measured on IQM Resonance, open plan, Garnet:
@@ -331,10 +368,14 @@ Measured on IQM Resonance, open plan, Garnet:
 |---|---|---|
 | 1 | 8 adjacent + 1 control, 40 circuits, 4096 shots | **26.00** |
 | 2 | 5 adjacent + 4 controls, 40 circuits, 4096 shots | **26.00** |
+| 3 | identical to run 2, three hours later | **27.50** |
 
 The cost is set by circuit count and shots, not by how many pairs are packed in
-— which is the whole point of packing them. Both runs mapped a different slice
-of the chip for the same price.
+— which is the whole point of packing them. Runs 1 and 2 mapped different
+slices of the chip for the same price.
+
+Billing is not perfectly deterministic: runs 2 and 3 were identical in every
+setting and differed by 6%. Budget for a few percent of variation.
 
 To reduce it: `SHOTS = 2048` roughly halves the cost and widens the error bars
 by about 1.3×. `N_TAU = 8` saves a further 20% at some loss of slope precision.
