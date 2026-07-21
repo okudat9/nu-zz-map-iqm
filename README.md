@@ -110,8 +110,8 @@ pip install -r requirements.txt
 ```
 
 Versions are pinned to what the hardware results below were produced with:
-`qiskit 2.5.0`, `iqm-client 34.0.4`, `numpy 2.5.1`, `scipy 1.17.1`, Python 3.12.
-Nothing beyond these has been verified on hardware.
+`qiskit 2.1.2`, `iqm-client 34.0.3`, `numpy 2.4.4`, `scipy 1.17.1`, Python 3.12.
+Newer versions may work, but nothing beyond these has been verified on hardware.
 
 If you previously installed the deprecated `qiskit-iqm` package, remove it first
 (`pip uninstall qiskit-iqm`) — the Qiskit adapter now ships inside `iqm-client`

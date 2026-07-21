@@ -34,7 +34,7 @@ Usage (Windows):
 
 Requires:
   pip install -r requirements.txt
-  Pinned to qiskit 2.5.0 / iqm-client 34.0.4 / numpy 2.5.1 / scipy 1.17.1,
+  Pinned to qiskit 2.1.2 / iqm-client 34.0.3 / numpy 2.4.4 / scipy 1.17.1,
   Python 3.12 -- the versions the hardware results were produced with.
   (the deprecated qiskit-iqm package must be uninstalled first if present;
    the import path iqm.qiskit_iqm is unchanged)

@@ -1,0 +1,22 @@
+# Pinned to the versions this tool was tested against.
+# The hardware results in the README were produced with exactly these.
+#
+# Install:
+#   pip install -r requirements.txt
+#
+# Newer versions may well work — the API surface used here is small and
+# stable — but nothing beyond these has been verified against hardware.
+
+qiskit==2.1.2
+iqm-client==34.0.3
+numpy==2.4.4
+scipy==1.17.1
+
+# Python 3.12.
+#
+# Note: the deprecated qiskit-iqm package must not be present. If it is,
+# uninstall it first — the Qiskit adapter now ships inside iqm-client and
+# the import path iqm.qiskit_iqm is unchanged.
+#
+#   pip uninstall qiskit-iqm
+#   pip install -r requirements.txt
